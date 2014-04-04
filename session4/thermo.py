@@ -32,6 +32,7 @@ class Principal(QtGui.QFrame):
         
         # Conectamos la senal de click del boton (boton_conectar) con el metodo inicio
         self.connect(self.ui.boton_conectar, QtCore.SIGNAL("clicked()"), self.inicio)
+                
         
     def inicio(self):
         # Conexcion pinguino
@@ -43,8 +44,13 @@ class Principal(QtGui.QFrame):
         else: 
             # Activamos en la GUI el elemento QWT [qwtThermo]
             self.ui.qwt_Thermo.setEnabled(True) 
-            self.termperatura()
-            
+            #self.termperatura()
+                    
+            # Timer
+            self.timer = QtCore.QTimer()
+            self.timer.timeout.connect(self.termperatura)
+            self.timer.start(1000) #se ejecutará la self.temperatura() cada 1000 mili segundos 
+                
 
 
         """if self.myString == "0":
@@ -90,16 +96,20 @@ class Principal(QtGui.QFrame):
         self.INTERVAL = 100 # intervalo (tiempo) de lectura 
         deg = unichr(176).encode("utf-8")
         self.myString = ''
-        
+
         # Obtiene los datos de la targeta Pinguino 
         try :
-            for i in self.pinguino.pinguinoRead(4, 1000):
+            for i in self.pinguino.pinguinoRead(2, 1000):
                 self.myString += chr(i)
                 
         except usb.USBError as err:
             pass
 
+        #print  "mystring",self.myString  #debug
+        #print type(self.myString) #debug
+        #print int(self.myString) #debug
         if len(self.myString) > 0:
+            #print "entro" #debug
             self.termperatura = int(self.myString)
             self.ui.qwt_Thermo.setValue(self.termperatura) # Asigna valor al elemento qwtThermo
             self.ui.lcdNumber_1.display(self.termperatura) # Muestra un valor en el LCD

@@ -14,7 +14,6 @@ from PyQt4 import QtCore,QtGui
 from thermoUi import Ui_Form
 # Importamos Modulos para el manejo de USB
 import usb
-import time
 
 #-------------------------------------------------------------------------------
 # main
@@ -39,35 +38,29 @@ class Principal(QtGui.QFrame):
         self.pinguino = Pinguino()
         if self.pinguino.pinguinoOpen() == None:
             print >> sys.stderr, "Unable to open Pinguino device!"
-            self.pinguino.pinguinoClose()
-            # Cerrar aplicacion de manera correcta.
+            self.pinguino.pinguinoClose() # Cerrar aplicacion de manera correcta.
         else: 
             # Activamos en la GUI el elemento QWT [qwtThermo]
             self.ui.qwt_Thermo.setEnabled(True) 
-            #self.termperatura()
+            # Cmbiamos el boton_salir a un boton que termine la aplicacion
+            #self.ui.boton_conectar.setText("Salir")
+            #self.ui.boton_conectar.setToolTip(u"Termina correctamente la Conexión y cierra la aplicación")               
+            self.ui.boton_conectar.setEnabled(False)
                     
             # Timer
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.termperatura)
             self.timer.start(1000) #se ejecutará la self.temperatura() cada 1000 mili segundos 
                 
-
-
-        """if self.myString == "0":
-            print "es cero"
-        else :
-            print "cualquier valor, no es cero"
-        """
-        #print "Valor recibido: ",self.myString
-
         
         
         """ Metodos para qwtTermo """
         #self.ui.qwt_Thermo.setValue(40) # Asigna valor al elemento qwtThermo
-        #self.ui.qwt_Thermo.setPipeWidth(20) # Cambia anchura del pipe(barar termomentro)
+        #self.ui.qwt_Thermo.setPipeWidth(20) # Cambia anchura del pipe(barra termomentro)
         #self.ui.qwt_Thermo.setAlarmLevel(50) Cambia el nivel de alarma [entero]
         #self.ui.qwt_Thermo.setAlarmColor(QtGui.QColor(0, 177, 0)) # cambia el Color de la ararma
-        #print self.ui.qwt_Thermo.alarmEnabled() # retorna True si la alarma esta activa
+        #print self.ui.qwt_Thermo.alarmEnabled() # retorna True si existe alarma
+        #print self.ui.qwt_Thermo.alarmLevel() # Retorna el valor en el cual se activa la alarma
 
         # Cambio alarm Brush de alarm
         #brush = QtGui.QBrush(QtGui.QColor(0 , 0, 170))
@@ -77,7 +70,7 @@ class Principal(QtGui.QFrame):
         """Metodos QLCDNumber """
         #self.ui.lcdNumber_1.display(60) # Muestra un valor en el LCD
         # Sinal = overFlow
-        #print self.ui.lcdNumber_1.value() # Recorta valor de QLCDNumber
+        #print self.ui.lcdNumber_1.value() # Retorta valor de QLCDNumber
         #print self.ui.lcdNumber_1.intValue() # Recorta valor de QLCDNumber en entero
         #self.ui.lcdNumber_1.setDisabled(True)# Desactiva el LCD
         #self.ui.lcdNumber_1.setNumDigits(1) # Numero de digitos que muestra el LCD
@@ -99,13 +92,13 @@ class Principal(QtGui.QFrame):
 
         # Obtiene los datos de la targeta Pinguino 
         try :
-            for i in self.pinguino.pinguinoRead(2, 1000):
+            for i in self.pinguino.pinguinoRead(2, self.INTERVAL):
                 self.myString += chr(i)
                 
         except usb.USBError as err:
             pass
 
-        #print  "mystring",self.myString  #debug
+        #print  "Valor que llega",self.myString  #debug
         #print type(self.myString) #debug
         #print int(self.myString) #debug
         if len(self.myString) > 0:
@@ -113,6 +106,10 @@ class Principal(QtGui.QFrame):
             self.termperatura = int(self.myString)
             self.ui.qwt_Thermo.setValue(self.termperatura) # Asigna valor al elemento qwtThermo
             self.ui.lcdNumber_1.display(self.termperatura) # Muestra un valor en el LCD
+            # Calculamos la diferencia entre la alarma y el valor mostrado 
+            if (self.ui.lcdNumber_1.value() - self.ui.qwt_Thermo.alarmLevel())  > 0 :
+                self.ui.lcdNumber_2.display(self.ui.lcdNumber_1.value() - self.ui.qwt_Thermo.alarmLevel()) 
+            
             
             
 #-------------------------------------------------------------------------------

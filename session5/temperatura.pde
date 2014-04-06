@@ -25,7 +25,7 @@ void loop()
 {
     //temperatura = analogRead(13); 
 
-    entero = 50;
+    entero = 60;
     caracter = (unsigned char)entero;
     
     USB.send(caracter, 2);

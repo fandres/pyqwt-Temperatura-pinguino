@@ -10,11 +10,13 @@ last update	17/07/2013
 
 void setup()
 {
+    pinMode(13, INPUT);  
 }
 
 void loop()
 {
-  	USB.send("30", 2);			// send 15 bytes on usb bus
-		toggle(USERLED);		                    // blinked user led for visual debug
-		delay(1000);			                      // wait for 1 sec. before next sending
+    analogRead(13); 
+    USB.send("60", 2);			// send 15 bytes on usb bus
+    toggle(USERLED);		                    // blinked user led for visual debug
+    delay(1000);			                      // wait for 1 sec. before next sending
 }

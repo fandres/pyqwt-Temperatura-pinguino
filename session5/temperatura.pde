@@ -1,38 +1,27 @@
 /*-----------------------------------------------------
 Author:  --<fandres>
 Date: 2014-04-03
-Description:lm35....
-first release	14/09/2010
-last update	17/07/2013
-
+Description: Adquiere informacion de un lm35 y lo envia a host.Pro
+Programa Host [Python]: https://github.com/fandres/pyqwt-Temperatura-pinguino/tree/master/session5
 -----------------------------------------------------*/
 
-//int temperatura;
-int entero;
-unsigned char caracter;
+
+#include <stdlib.h>   // la necesitaremos para la función "itoa()"
+
+char enviado[64];   // Cadena a ser enviada.
+int entero = 0;     // Donde almacenamos temporalmente el valor leido.
 
 void setup()
 {
-    entero = 0;
-    caracter = 0;
-    pinMode(13, INPUT);  
-    
-    pinMode(0,OUTPUT);
-    digitalWrite(0,LOW);
+    pinMode(13, INPUT);  // pin 13 de la board pinguino como salida.
 }
 
+//-------------------------loop()---------------------//
 void loop()
 {
-    //temperatura = analogRead(13); 
-
-    entero = 60;
-    caracter = (unsigned char)entero;
     
-    USB.send(caracter, 2);
-    
-    digitalWrite(0,HIGH);
-    toggle(USERLED);
-    delay(1000);
-			
-
+    entero = analogRead(13);    // Leyendo del Pin13
+    itoa(entero,enviado,10);    // Conversión de int a string
+    BULK.write(enviado, 4);    // Enviado los datos al host
+    delay(500);                // Esperamos 500 milisegundos. 
 }

@@ -11,6 +11,7 @@ Programa Host [Python]: https://github.com/fandres/pyqwt-Temperatura-pinguino/tr
 char enviado[64];   // Cadena a ser enviada.
 int entero = 0;     // Donde almacenamos temporalmente el valor leido.
 
+//-------------------------setup()---------------------//
 void setup()
 {
     pinMode(13, INPUT);  // pin 13 de la board pinguino como salida.
@@ -23,5 +24,5 @@ void loop()
     entero = analogRead(13);    // Leyendo del Pin13
     itoa(entero,enviado,10);    // Conversión de int a string
     BULK.write(enviado, 5);    // Enviado los datos al host
-    delay(100);                // Esperamos 90 milisegundos. 
+    delay(100);                // Esperamos 100 milisegundos. 
 }

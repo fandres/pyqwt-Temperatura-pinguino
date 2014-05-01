@@ -22,6 +22,6 @@ void loop()
     
     entero = analogRead(13);    // Leyendo del Pin13
     itoa(entero,enviado,10);    // Conversión de int a string
-    BULK.write(enviado, 4);    // Enviado los datos al host
-    delay(500);                // Esperamos 500 milisegundos. 
+    BULK.write(enviado, 5);    // Enviado los datos al host
+    delay(100);                // Esperamos 90 milisegundos. 
 }

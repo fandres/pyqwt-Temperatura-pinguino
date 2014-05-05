@@ -1,10 +1,11 @@
+#! /usr/bin/python
 # -*- coding: utf-8 -*-
 """
 Created on Thu Mar 27 18:28:11 2014
 
-<< Pinguino by Marin Purgar (marin.purgar@gmail.com)                          >>
+<< Pinguino by Marin Purgar (marin.purgar@gmail.com)                         >>
 
-@author: fAnDrEs
+@author: fAnDrEs (fabian.salamanca@openmailbox.org)
 """
 
 import sys    
@@ -40,17 +41,14 @@ class Principal(QtGui.QFrame):
             print >> sys.stderr, "Unable to open Pinguino device!"
             self.pinguino.pinguinoClose() # Cerrar aplicacion de manera correcta.
         else: 
-            # Activamos en la GUI el elemento QWT [qwtThermo]
-            self.ui.qwt_Thermo.setEnabled(True) 
-            # Cmbiamos el boton_salir a un boton que termine la aplicacion
-            #self.ui.boton_conectar.setText("Salir")
-            #self.ui.boton_conectar.setToolTip(u"Termina correctamente la Conexión y cierra la aplicación")               
+            # Activamos en la GUI el elemento QWT [qwtThermo] y desactivamos el boton conectar.
+            self.ui.qwt_Thermo.setEnabled(True)             
             self.ui.boton_conectar.setEnabled(False)
                     
             # Timer
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.termperatura)
-            self.timer.start(1000) #se ejecutará la self.temperatura() cada 1000 mili segundos 
+            self.timer.start(50) #se ejecutará la self.temperatura() cada 500 mili segundos 
                 
         
         
@@ -92,18 +90,24 @@ class Principal(QtGui.QFrame):
 
         # Obtiene los datos de la targeta Pinguino 
         try :
-            for i in self.pinguino.pinguinoRead(2, self.INTERVAL):
-                self.myString += chr(i)
+            for i in self.pinguino.pinguinoRead(5, self.INTERVAL):
+                if i > 47 and i < 58:    # ANSI 0,1,2,...,9
+                    #print "valor actual",i # Debug
+                    self.myString += chr(i)
+                    #print "actual caracter",chr(i) # Debug
+                    #print "total ",self.myString # Debug
                 
         except usb.USBError as err:
             pass
 
-        #print  "Valor que llega",self.myString  #debug
+        #print  "myString completo:",self.myString  #debug
+        #print float(self.myString)
         #print type(self.myString) #debug
         #print int(self.myString) #debug
         if len(self.myString) > 0:
-            #print "entro" #debug
-            self.termperatura = int(self.myString)
+            #print "myString con longitud" #debug
+            self.termperatura = (5*int(self.myString)*100)/1023 # Conversión a Grados celcius.
+            #print "temperatura",self.termperatura #debug
             self.ui.qwt_Thermo.setValue(self.termperatura) # Asigna valor al elemento qwtThermo
             self.ui.lcdNumber_1.display(self.termperatura) # Muestra un valor en el LCD
             # Calculamos la diferencia entre la alarma y el valor mostrado 

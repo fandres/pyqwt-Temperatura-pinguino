@@ -2,7 +2,7 @@
 ==============================================================
 
 Un pequeño ejemplo de el uso de la especificación USB en modo BULK “PC – board pinguino” , programando la interfaz gráfica de usuario con PyQt4, pyqwt y programado desde python 2x. 
-Usando la board pinguino para adqirir los datos desde un lm35.
+Usando la board pinguino para adquirir los datos desde un lm35.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -14,13 +14,13 @@ Usando la board pinguino para adqirir los datos desde un lm35.
 
 Se divide en 5 sesiones
 
-| session | Propósito |
+| Sesión | Propósito |
 | ------- | --------- |
 | sesión 1 |  Se crea la interfaz gráfica con la herramienta Qt Designer[4]. |
 | sesión 2 |  Agregando lanzador, clase pinguino y ajustando interfaz. |
 | sesión 3 |  Testeando objetos QwtThermo y QLCDNumber. |
 | sesión 4 |  Llamada constante (cada 1 segundo) a la funcion de adquicion de datos de la board pinguino |
-| sesión 5 |  Adquisicion de datos de la board pinguino. |
+| sesión 5 |  Adquisición de datos de la board pinguino. |
 
 
 # REQUERIMIENTOS

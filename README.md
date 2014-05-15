@@ -6,9 +6,9 @@ Usando la board pinguino para adqirir los datos desde un lm35.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-@author: fAnDrEs					(fabian.salamanca@openmailbox.org)
+- @author: fAnDrEs					(fabian.salamanca@openmailbox.org)
 
-- Pinguino by Marin Purgar 				(marin.purgar@gmail.com >>
+- class Pinguino by Marin Purgar 				(marin.purgar@gmail.com >>
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

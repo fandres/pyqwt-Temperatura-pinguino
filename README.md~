@@ -1,4 +1,4 @@
-#Adquisición de datos mediante python, PyQt + pyqwt con la interfaz USB en Modo BULK desde board pingüino.
+#Adquisición de datos mediante python, PyQt + pyqwt con la interfaz USB en Modo BULK desde board pinguino.
 ==============================================================
 
 Un pequeño ejemplo de el uso de la especificación USB en modo BULK “PC – board pinguino” , programando la interfaz gráfica de usuario con PyQt4, pyqwt y programado desde python 2x. 
